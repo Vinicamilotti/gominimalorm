@@ -16,3 +16,15 @@ func StructFieldPtr(x interface{}) []any {
 	}
 	return ret
 }
+
+func StructFieldNames(x interface{}) []string {
+	xt := reflect.TypeOf(x).Elem()
+	ret := []string{}
+	for i := 0; i < xt.NumField(); i++ {
+		if !xt.Field(i).IsExported() {
+			continue
+		}
+		ret = append(ret, xt.Field(i).Name)
+	}
+	return ret
+}
