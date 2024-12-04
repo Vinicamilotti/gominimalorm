@@ -82,31 +82,3 @@ func Insert[T interface{}](db *DbHandler, tableName string, model T) (sql.Result
 
 	return SqlExec(db, sql, fieldValues...)
 }
-
-type Test struct {
-	Id    string
-	Nome  string
-	Idade int
-}
-
-func main() {
-	db := &DbHandler{
-		Dns: "host=localhost user=postgres password=0303 dbname=teste port=5432 sslmode=disable TimeZone=America/Sao_Paulo",
-	}
-	db.Open()
-	res, err := Query[Test](db, "SELECT * FROM teste")
-	if err != nil {
-		panic(err)
-	}
-	for _, v := range res {
-		fmt.Println(v.Nome)
-	}
-
-	res2, err := QuerySingle[Test](db, "SELECT * FROM teste WHERE nome = $1", "vini")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(res2.Nome)
-	fmt.Println(generate_insert([]string{"nome", "idade"}, "test"))
-
-}
